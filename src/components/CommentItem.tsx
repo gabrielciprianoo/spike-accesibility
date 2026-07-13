@@ -1,4 +1,5 @@
 import type { Comment } from '../types'
+import { useTextToSpeech } from '../hooks/useTextToSpeech'
 
 type CommentItemProps = {
   comment: Comment
@@ -13,6 +14,8 @@ function formatDate(iso: string): string {
 }
 
 export default function CommentItem({ comment, ttsAvailable }: CommentItemProps) {
+  const { speak } = useTextToSpeech()
+
   return (
     <li className="comment-item">
       <div className="comment-item__header">
@@ -23,6 +26,7 @@ export default function CommentItem({ comment, ttsAvailable }: CommentItemProps)
             type="button"
             className="comment-item__speaker"
             disabled={!ttsAvailable}
+            onClick={() => speak(comment.text)}
             title={ttsAvailable ? 'Escuchar comentario' : 'Lectura en voz alta no disponible'}
             aria-label={ttsAvailable ? 'Escuchar comentario' : 'Lectura en voz alta no disponible'}
           >
