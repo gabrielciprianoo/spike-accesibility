@@ -1,6 +1,6 @@
 # SPEC 01 — Voice-Dictated Comments and Read-Aloud (Spike)
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** None
 > **Date:** 2026-07-13
 > **Objective:** Investigate and implement, in a local comment simulation, voice dictation (speech-to-text) for writing comments and read-aloud (text-to-speech) for existing comments, both in Spanish (es-MX), using the browser's native Web Speech API.
