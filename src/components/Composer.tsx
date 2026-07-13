@@ -3,6 +3,7 @@ import { useSpeechToText } from '../hooks/useSpeechToText'
 
 type ComposerProps = {
   sttAvailable: boolean
+  onSubmit: (text: string) => void
 }
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -15,7 +16,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   network: 'Error de red durante el dictado.',
 }
 
-export default function Composer({ sttAvailable }: ComposerProps) {
+export default function Composer({ sttAvailable, onSubmit }: ComposerProps) {
   const [text, setText] = useState('')
 
   const { isListening, error, start, stop } = useSpeechToText((transcript) => {
@@ -28,6 +29,15 @@ export default function Composer({ sttAvailable }: ComposerProps) {
     } else {
       start()
     }
+  }
+
+  const handleSubmit = () => {
+    const trimmed = text.trim()
+    if (!trimmed) {
+      return
+    }
+    onSubmit(trimmed)
+    setText('')
   }
 
   return (
@@ -59,6 +69,14 @@ export default function Composer({ sttAvailable }: ComposerProps) {
             </button>
           </span>
         )}
+        <button
+          type="button"
+          className="composer__submit"
+          disabled={!text.trim()}
+          onClick={handleSubmit}
+        >
+          Comentar
+        </button>
       </div>
     </div>
   )
