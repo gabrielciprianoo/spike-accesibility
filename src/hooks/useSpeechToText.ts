@@ -22,12 +22,7 @@ type SpeechRecognitionInstance = {
   onresult: ((event: SpeechRecognitionResultEvent) => void) | null
   onend: (() => void) | null
   onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
-  onstart: (() => void) | null
-  onaudiostart: (() => void) | null
   onspeechstart: (() => void) | null
-  onspeechend: (() => void) | null
-  onaudioend: (() => void) | null
-  onnomatch: (() => void) | null
 }
 
 type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance
@@ -73,17 +68,10 @@ export function useSpeechToText(onResult: (transcript: string) => void) {
       }
     }
 
-    recognition.onstart = () => console.log('[STT] onstart')
-    recognition.onaudiostart = () => console.log('[STT] onaudiostart')
     recognition.onspeechstart = () => {
-      console.log('[STT] onspeechstart')
       networkRetryCountRef.current = 0
     }
-    recognition.onspeechend = () => console.log('[STT] onspeechend')
-    recognition.onaudioend = () => console.log('[STT] onaudioend')
-    recognition.onnomatch = () => console.log('[STT] onnomatch')
     recognition.onend = () => {
-      console.log('[STT] onend')
       if (retryingRef.current) {
         retryingRef.current = false
         return
@@ -91,7 +79,6 @@ export function useSpeechToText(onResult: (transcript: string) => void) {
       setIsListening(false)
     }
     recognition.onerror = (event) => {
-      console.error('[STT] onerror', event.error)
       if (event.error === 'network' && networkRetryCountRef.current < MAX_NETWORK_RETRIES) {
         networkRetryCountRef.current += 1
         retryingRef.current = true
